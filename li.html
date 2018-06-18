@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="container">
+    <ul>
+        <item
+            v-for="listitem in list"
+            v-bind:todo="listitem"
+            v-bind:key="listitem.id">
+        </item>
+    </ul>
+    
+    <app></app>
+
+    <calculate></calculate>
+</div>
+<script>
+
+Vue.component('item',{
+    props:['todo'],
+    template:'<li>{{todo.text}}{{todo.con}}</li>'
+})
+
+Vue.component('app',{
+    data:function(){
+        return {
+            num1:'33.52',
+            num2:'12.54',
+            num3:'43.52'
+        }
+    },
+    template:'<div>数字1：{{num1|tolnt}}<br/>数字2：{{num2|tolnt}}<br/>数字3：{{num3|tolnt}}<br/>总和：{{sum}}</div>',
+    computed:{
+        sum:function(){
+            var num=this.num1+this.num2+this.num3;
+            return num;
+        }
+    },
+    filters:{
+        tolnt:function(value){
+            var num=value+3;
+            return parseInt(num);
+        }
+    }
+})
+
+Vue.component('calculate',{
+    data:function(){
+        return{
+            a:0
+        }
+    },
+    template:'<div><button @click="plus">加1</button><button @click="minues">减2</button>{{a}}</div>',
+    methods:{
+        plus:function(){
+            return this.a++;
+        },
+        minues:function(){
+            return this.a-=2;
+        },
+    },
+    watch:{
+        a:function(){
+            console.log('有变化了，最新值：'+this.a);
+        }
+    }
+})
+
+new Vue({
+    el:'#container',
+    data:{
+        list:[
+            {id:'0',text:'我是第一个元素',con:'aaa'},
+            {id:'1',text:'我是第二个元素',con:'bbb'},
+            {id:'2',text:'我是第三个元素',con:'ccc'}
+        ]
+    }
+})
+</script>
+</body>
+</html>
